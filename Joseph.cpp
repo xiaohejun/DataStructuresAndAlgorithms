@@ -26,14 +26,16 @@ public:
 };
 
 template <typename T>
-class LinkList: public Link<T>{ // 线性链表类继承链表模板类
+class CircleLinkList: public Link<T>{ // 单向循环链表类继承链表模板类
 private:
-    Link<T> *head, *tail; // 链表的头尾指针
+    Link<T> *head; // 头指针,不是头结点
+    int cur; // 元素编号
     Link<T>* setPos(const int p); // 第p个元素指针
 public:
-    LinkList(){}; //
-    LinkList(int s); // 构造函数
-    ~LinkList(){clear();}; // 析够函数
+    CircleLinkList(){}; //
+    CircleLinkList(int s); // 构造函数
+    ~CircleLinkList(){clear();}; // 析够函数
+
     bool isEmpty(); // 判断链表是否为空
     void clear(); // 将链表储存内容清空,成为空表
     int length(); // 返回当前链表的实际长度
@@ -47,7 +49,7 @@ public:
 
 // 打印链表
 template <typename T>
-void  LinkList<T>::print(){
+void  CircleLinkList<T>::print(){
     if(isEmpty()) return;
     Link<T> *p = head->next;
     while(p){
@@ -59,7 +61,7 @@ void  LinkList<T>::print(){
 
 
 template <typename T>  // 函数返回值是找到的结点指针
-Link<T>* LinkList<T>::setPos(const int i){
+Link<T>* CircleLinkList<T>::setPos(const int i){
     int count = 0;
     if(i == -1) return head; // 头结点是-1的位置
     // 循环定位,若i的值是0则定位到第一个结点
@@ -71,42 +73,29 @@ Link<T>* LinkList<T>::setPos(const int i){
     return p;
 }
 
-/* // 逆向创建链表
-template <typename T>
-LinkList<T>::LinkList(int s){ // 构造函数,s为要输入的链表元素个数
-    head = new Link<T>();
-    T value;
-    while(s--){
-        cin >> value; // 输入数据
-        Link<T> *p = new Link<T>(value, head->next); // 创建结点
-        head->next = p;
-    }
-}
-*/
 // 正向创建链表
 template <typename T>
-LinkList<T>::LinkList(int s){ // 构造函数,s为要输入的链表元素个数
-    head = new Link<T>();
-    tail = new Link<T>();
+CircleLinkList<T>::CircleLinkList(int n){ // 构造函数,s为要输入的链表元素个数
     Link<T> *p,*q;
     T value;
-    while(s--){
+    for(int i = 1; i <= n; i++){
+        cur = i; // 记录序号
         cin >> value; // 输入数据
+        p = new Link<T>(value);
         q = p;
-        p = new Link<T>(value); // 创建结点
-        if(head->next == NULL) head->next = p;
-        else q->next = p;
+        if(i == 1) head = p; // 记录第一个,因为一会儿要指回来
+        q->next = p;
     }
-    tail = p;
+    p->next = head; // 指回第一个
 }
 
 template <typename T>
-bool LinkList<T>::isEmpty(){ // 判断链表是否为空
+bool CircleLinkList<T>::isEmpty(){ // 判断链表是否为空
     return head == NULL;
 }
 
 template <typename T>
-void LinkList<T>::clear(){ // 讲链表储存内容清空,成为空表
+void CircleLinkList<T>::clear(){ // 讲链表储存内容清空,成为空表
     if(isEmpty()) return;
     Link<T> *p,*q;
     p = head; // p记录head的下一个结点
@@ -120,7 +109,7 @@ void LinkList<T>::clear(){ // 讲链表储存内容清空,成为空表
 }
 
 template <typename T>
-int LinkList<T>::length(){ // 返回链表的实际长度
+int CircleLinkList<T>::length(){ // 返回链表的实际长度
     Link<T> *p = head->next; // 工作指针
     int len = 0;
     while(p != NULL){
@@ -131,13 +120,13 @@ int LinkList<T>::length(){ // 返回链表的实际长度
 }
 
 template <typename T>
-bool LinkList<T>::append(const T value){ // 在链表的表尾添加一个元素
+bool CircleLinkList<T>::append(const T value){ // 在链表的表尾添加一个元素
     return (insert(length(), value)); // 在尾部插入
 }
 
 
 template <typename T>
-bool LinkList<T>::insert(const int i, const T value){ // 插入数据内容为value的新结点作为第i个结点(i从0开始),也就是说是往第i个结点的前面插入一个结点
+bool CircleLinkList<T>::insert(const int i, const T value){ // 插入数据内容为value的新结点作为第i个结点(i从0开始),也就是说是往第i个结点的前面插入一个结点
     Link<T> *p,*q;
 
     if((p = setPos(i-1)) == NULL){ // p是第i个结点的前驱
@@ -153,7 +142,7 @@ bool LinkList<T>::insert(const int i, const T value){ // 插入数据内容为va
 
 
 template <typename T>
-bool LinkList<T>::remove(const int i){ // 移走第i个元素
+bool CircleLinkList<T>::remove(const int i){ // 移走第i个元素
     Link<T> *p,*q;
     if((p = setPos(i-1)) == NULL || p == tail){ // 待删除结点不存在,给定的i的值大于当前中元素的个数
         cout << "非法删除点" << endl;
@@ -173,7 +162,7 @@ bool LinkList<T>::remove(const int i){ // 移走第i个元素
 
 
 template <typename T>
-bool LinkList<T>::getValue(const int i, T & value){ // 查找第i个元素,并且把它的值给value
+bool CircleLinkList<T>::getValue(const int i, T & value){ // 查找第i个元素,并且把它的值给value
     Link<T> *p = head->next; // 工作指针
     int count= 0; // 记录个数
     if(i < 0 || p == NULL) return false; // i的值不合法,或者这是一个空链表
@@ -187,7 +176,7 @@ bool LinkList<T>::getValue(const int i, T & value){ // 查找第i个元素,并�
 
 
 template <typename T>
-bool LinkList<T>::getPos(int &i, const T value){ // 查找元素值是value的位置
+bool CircleLinkList<T>::getPos(int &i, const T value){ // 查找元素值是value的位置
     Link<T> *p = head->next; // 工作指针
     int count= 0; // 记录个数
     if(i < 0 || p == NULL) return false; // i的值不合法,或者这是一个空链表
@@ -203,31 +192,18 @@ bool LinkList<T>::getPos(int &i, const T value){ // 查找元素值是value的�
 }
 
 // 主函数测试数据
-// 测试文件的内容: 1 2 3 4 5 6 7 8 9 10
 int main(){ 
     freopen("in.txt", "r", stdin);
-    // 测试初始化输入数据
-    LinkList<int> l(10);
-    l.print();
-    // 测试判空
-    if(l.isEmpty()) cout << "List is NULL!" << endl;
-    cout << "List length = " << l.length() << endl;
-    l.append(11);
-    l.print();
-    l.remove(10);
-    l.print();
-    l.insert(2,55);
-    l.print();
-    int tmp;
-    l.getValue(2,tmp);
-    cout << "tmp=" << tmp << endl;
-    l.getPos(tmp,3);
-    cout << "value 3 pos is " << tmp << endl;
-    LinkList<int> li;
-    if(li.isEmpty()) cout << "li is NULL" << endl;
-    l.clear();
-    if(l.isEmpty()) cout << "This is NULL" << endl;
-    l.print();
+    int n; // 人数
+    while(true){
+        cout << "输入人数:" << endl;
+        cout >> n;
+        if(n<=0) break; // 控制退出条件
+        cout << "依次输入 " << n << " 个人的密码值:" << endl;
+        CircleLinkList<int> joseph(n); // 创建单向循环链表
+        joseph.JosephVisit(n,m); // 进行模拟遍历 
+    }
+
     fclose(stdin);
     return 0;
 }
