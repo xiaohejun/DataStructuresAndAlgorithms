@@ -5,10 +5,10 @@
 	> Created Time: 2017年11月02日 星期四 14时15分38秒
  ************************************************************************/
 
-#include <iostream>
-#include <cstdio>
+// #include <iostream>
+// #include <cstdio>
 
-using namespace std;
+// using namespace std;
 
 template <typename T>
 class Link{ // 链表模板类
@@ -202,35 +202,35 @@ bool LinkList<T>::getPos(int &i, const T value){ // 查找元素值是value的�
     return false;
 }
 
-// 主函数测试数据
-// 测试文件的内容: 1 2 3 4 5 6 7 8 9 10
-int main(){ 
-    freopen("in.txt", "r", stdin);
-    // 测试初始化输入数据
-    LinkList<int> l(10);
-    l.print();
-    // 测试判空
-    if(l.isEmpty()) cout << "List is NULL!" << endl;
-    cout << "List length = " << l.length() << endl;
-    l.append(11);
-    l.print();
-    l.remove(10);
-    l.print();
-    l.insert(2,55);
-    l.print();
-    int tmp;
-    l.getValue(2,tmp);
-    cout << "tmp=" << tmp << endl;
-    l.getPos(tmp,3);
-    cout << "value 3 pos is " << tmp << endl;
-    LinkList<int> li;
-    if(li.isEmpty()) cout << "li is NULL" << endl;
-    l.clear();
-    if(l.isEmpty()) cout << "This is NULL" << endl;
-    l.print();
-    fclose(stdin);
-    return 0;
-}
+// // 主函数测试数据
+// // 测试文件的内容: 1 2 3 4 5 6 7 8 9 10
+// int main(){ 
+//     freopen("in.txt", "r", stdin);
+//     // 测试初始化输入数据
+//     LinkList<int> l(10);
+//     l.print();
+//     // 测试判空
+//     if(l.isEmpty()) cout << "List is NULL!" << endl;
+//     cout << "List length = " << l.length() << endl;
+//     l.append(11);
+//     l.print();
+//     l.remove(10);
+//     l.print();
+//     l.insert(2,55);
+//     l.print();
+//     int tmp;
+//     l.getValue(2,tmp);
+//     cout << "tmp=" << tmp << endl;
+//     l.getPos(tmp,3);
+//     cout << "value 3 pos is " << tmp << endl;
+//     LinkList<int> li;
+//     if(li.isEmpty()) cout << "li is NULL" << endl;
+//     l.clear();
+//     if(l.isEmpty()) cout << "This is NULL" << endl;
+//     l.print();
+//     fclose(stdin);
+//     return 0;
+// }
 
 
 
