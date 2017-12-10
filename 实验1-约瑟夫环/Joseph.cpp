@@ -205,7 +205,7 @@ void CircleLinkList<T>::josephVisit(int n, int m){ // 进行约瑟夫遍历
        // cout << "cur=" << p->cur << " " << endl; // 打印当前在的位置
         cout << p->cur << " ";
         //cout << "p->data=" << m << endl;
-       // cout << "m=" << m << " pos=" << pos << " cur=" << p->cur;
+        cout << "m=" << m << " pos=" << pos << " cur=" << p->cur;
         m = p->data; // m的值更新
         remove(pos);
         print();

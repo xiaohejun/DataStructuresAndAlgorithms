@@ -201,6 +201,7 @@ class TheCarPark
 public:
 	TheCarPark(){}
 	void baseSimulate(); // 开始基本的模拟
+	void plusSimulate(); // 开始进行选做内容的模拟
 	
 };
 // 基本的模拟
@@ -258,9 +259,37 @@ void TheCarPark::baseSimulate(){ // n是停车场最多停多少车
 	fclose(stdin);
 }
 
+/*
+【选作内容】
+（1）两个栈共享空间，思考应开辟数组的空间是多少？
+（2）汽车可以有不同种类，则他们的占地面积不同，收费标准也不同，
+	如1辆客车和1。5辆小汽车的占地面积相同，1辆十轮卡车占地面积
+	相当于3辆小汽车的占地面积。
+	占地面积：汽车=1，客车=1.5，卡车=3
+（3）汽车可以直接从便道上开走，此时排在它前面的汽车要先开走让路，
+	然后再依次排到队尾。停放在便道上的汽车业收费，收费标准比停
+*/
+
+// void TheCarPark::plusSimulate(){
+// 	freopen("plusSimulate.txt", "r", stdin);
+
+// 	fclose(stdin);
+// }
+
+
+
 int main(int argc, char const *argv[])
 {	
+	int choose;
 	TheCarPark carPark;
-	carPark.baseSimulate(); // 进行基本模拟
+	carPark.baseSimulate();
+	// while(true){
+	// 	cout << "输入1进行基本模拟，其他进行选做内容的模拟！" << endl;
+	// 	cin >> choose;
+	// 	switch(choose){
+	// 		case 1: carPark.baseSimulate(); break;// 进行基本模拟
+	// 		default: carPark.plusSimulate(); break; // 选做内容的模拟 
+	// 	}
+	// }
 	return 0;
 }

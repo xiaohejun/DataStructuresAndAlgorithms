@@ -3,6 +3,7 @@
     > Author: 何军
     > Sub: 二叉树的实现
     > Created Time: 2017年10月30日 星期一 11时04分31秒
+
  ************************************************************************/
 
 #include <bits/stdc++.h>
@@ -21,7 +22,6 @@ public:
     BinaryTreeNode(const T& ele); // 给定数据的构造
     BinaryTreeNode(const T& ele, BinaryTreeNode<T> *l, BinaryTreeNode<T> *r); // 子树构造结点
     T value() const; // 返回当前结点数据
-    void visit(const BinaryTreeNode<T> *node); // 访问结点
     BinaryTreeNode<T> *leftchild() const; // 返回左子树,常量成员函数
     BinaryTreeNode<T> *rightchild() const; // 返回右子树
     void setLeftchild(BinaryTreeNode<T> *); // 设置左子树
@@ -53,8 +53,10 @@ public:
     void preOrderWithoutRecusion(BinaryTreeNode<T> *root); // 前序遍历二叉树或其子树用栈
     void inOrderWithoutRecusion(BinaryTreeNode<T> *root); // 中序遍历二叉树或其子树用栈
     void postOrderWithoutRecusion(BinaryTreeNode<T> *root); // 后序遍历二叉树或其子树用栈
+    void visit(const BinaryTreeNode<T> *node); // 访问结点
     void levelOrder(BinaryTreeNode<T> *root); // 按层次遍历二叉树或其子树
     void deleteBinaryTree(BinaryTreeNode<T> *root); // 删除二叉树或其子树
+    void createCharTree(BinaryTree<char> & tree);
 };
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -85,7 +87,7 @@ T BinaryTreeNode<T>::value() const{ // 返回当前结点数据
 }
 
 template <typename T>
-void BinaryTreeNode<T>::visit(const BinaryTreeNode<T> *node){ // 访问结点
+void BinaryTree<T>::visit(const BinaryTreeNode<T> *node){ // 访问结点
     cout << node->value() << " "; // 输出当前结点的数据
 }
 
@@ -229,7 +231,7 @@ void BinaryTree<T>::preOrderWithoutRecusion(BinaryTreeNode<T> *root){ // 先序�
     BinaryTreeNode<T> * pointer = root; // 因为不能改变root指针的指向,所以用一个工作指针代替
     aStack.push(NULL); // 栈底监视哨
     while(pointer){
-        Visit(pointer->value); // 访问当前结点
+        visit(pointer); // 访问当前结点
         if(pointer->rightchild() != NULL) // 右孩子入栈
             aStack.push(pointer->rightchild());
         if(pointer->leftchild() != NULL) // 左路下降
@@ -253,7 +255,7 @@ void BinaryTree<T>::inOrderWithoutRecusion(BinaryTreeNode<T> *root){ // 中序�
         } else { // 左子树访问完毕,转向右子树
             pointer = aStack.top(); // 得到栈顶元素
             aStack.pop(); // 当前元素退栈
-            Visit(pointer->value()); // 访问当前节点
+            visit(pointer); // 访问当前节点
             pointer = pointer->rightchild(); // 当前链接结构指向有孩子
         }
     }
@@ -288,13 +290,51 @@ void BinaryTree<T>::deleteBinaryTree(BinaryTreeNode<T> *root){ // 删除二叉�
         delete root; // 删除根结点
     }
 }
+
+template <typename T>
+void BinaryTree<T>::createCharTree(BinaryTree<char> & tree){ // 先序创建字符型二叉树,根左右
+    char info;
+    cin >> info;
+    if(info == '#') return ; // 空
+    else {
+        BinaryTree<char> leftTree;
+        BinaryTree<char> rightTree;
+        createCharTree(leftTree);
+        createCharTree(rightTree);
+        tree.createTree(info, leftTree, rightTree);
+    }
+}
 //------------------------------------------------------------------------------------------------------end
 
 
 int main(){
-    freopen("BinaryTreeIn.txt", "r", stdin);
+    freopen("in.txt", "r", stdin);
     BinaryTree<char> chTree;
+    chTree.createCharTree(chTree); // 创建字符型的树
+    cout << "先序遍历:" << endl;
+    chTree.preOrder(chTree.getRoot());
+    cout << endl;
 
+    cout << "中序遍历:" << endl;
+    chTree.inOrder(chTree.getRoot());
+    cout << endl;
+
+    cout << "后序遍历:" << endl;
+    chTree.postOrder(chTree.getRoot());
+    cout << endl;
+
+    cout << "层次遍历:" << endl;
+    chTree.levelOrder(chTree.getRoot());
+    cout << endl;
+
+    cout << "先序遍历利用栈:" << endl;
+    chTree.preOrderWithoutRecusion(chTree.getRoot());
+    cout << endl;
+    
+    cout << "中序遍历利用栈:" << endl;
+    chTree.inOrderWithoutRecusion(chTree.getRoot());
+    cout << endl;
+    
     fclose(stdin);
 }
 
